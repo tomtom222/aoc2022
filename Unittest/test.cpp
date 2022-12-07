@@ -63,6 +63,7 @@ $ ls
 
 	Dir result = Utils::inputDay7(day7);
 	ASSERT_EQ(result.size, 48381165);
-	//ASSERT_EQ(Functions::score(day2), 15);
+	ASSERT_EQ(Functions::day7_1(day7), 95437);
+	ASSERT_EQ(Functions::day7_2(day7), 24933642);
 	//ASSERT_EQ(Functions::score_2(day2), 12);
 }

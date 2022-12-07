@@ -14,6 +14,7 @@ struct Dir
 {
 	std::vector<Dir*> dirs;
 	std::vector<File*> files;
+	Dir* previousDir = nullptr;
 	unsigned int filesizes = 0;
 	unsigned int size = 0;
 	std::string name;
@@ -35,6 +36,7 @@ struct Dir
 	{
 		Dir* d = new Dir;
 		d->name = dirname;
+		d->previousDir = this;
 		dirs.push_back(d);
 	}
 

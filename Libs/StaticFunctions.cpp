@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <algorithm>
+#include <iostream>
 
 const std::vector<int> Functions::maxCalories(const std::string& input)
 {
@@ -140,6 +141,55 @@ const int Functions::score_2(const std::string& input)
 	return count;
 }
 
+void searchDir(Dir* dir, unsigned int& count, unsigned int s, unsigned int& ccount)
+{
+	for (auto* d : dir->dirs)
+	{
+		searchDir(d, count, s, ccount);
+	}
+	if (dir->size <= s)
+	{
+		std::cout << dir->name << std::endl;
+		count += dir->size;
+	}
+}
+
+const unsigned int Functions::day7_1(const std::string& input)
+{
+	Dir result = Utils::inputDay7(input);
+	unsigned int count = 0;
+	unsigned int ccount = 0;
+	unsigned int size = 100000;
+
+	searchDir(&result, count, size, ccount);
+	return count;
+}
+
+void searchClosestDir(Dir* dir, unsigned int spaceNeeded, std::vector<unsigned int>& dirs)
+{
+	for (auto* d : dir->dirs)
+	{
+		searchClosestDir(d, spaceNeeded, dirs);
+	}
+	if (dir->size >= spaceNeeded)
+	{
+		dirs.push_back(dir->size);
+	}
+}
+
+const unsigned int Functions::day7_2(const std::string& input)
+{
+	Dir result = Utils::inputDay7(input);
+
+	unsigned int spaceNeeded = 30000000- (70000000 - result.size);
+	std::vector<unsigned int> dirs;
+	searchClosestDir(&result, spaceNeeded, dirs);
+	std::sort(std::begin(dirs), std::end(dirs), [](unsigned int left, unsigned int right)
+			  { return right > left; });
+
+	return dirs[0];
+}
+
 std::vector<int> Utils::inputDay1(const std::string& input)
 {
 	std::vector<int> output;
@@ -176,7 +226,6 @@ Dir Utils::inputDay7(const std::string& input)
 {
 	Dir root;
 	root.name = "/";
-	Dir* previousdir = &root;
 	Dir* currentdir = &root;
 
 	auto ss = std::stringstream{input};
@@ -193,7 +242,7 @@ Dir Utils::inputDay7(const std::string& input)
 				}
 				else if (name == "..")
 				{
-					currentdir = previousdir;
+					currentdir = currentdir->previousDir;
 					continue;
 				}
 				else
