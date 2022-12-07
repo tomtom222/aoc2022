@@ -161,3 +161,69 @@ std::vector<int> Utils::inputDay1(const std::string& input)
 	}
 	return output;
 }
+
+void calculatesize(Dir* dir)
+{
+	dir->size += dir->filesizes;
+	for (auto* d : dir->dirs)
+	{
+		calculatesize(d);
+		dir->size += d->size;
+	}
+}
+
+Dir Utils::inputDay7(const std::string& input)
+{
+	Dir root;
+	root.name = "/";
+	Dir* previousdir = &root;
+	Dir* currentdir = &root;
+
+	auto ss = std::stringstream{input};
+	for (std::string line; std::getline(ss, line, '\n');)
+	{
+		if (!line.empty())
+		{
+			if (line.substr(0, 4) == "$ cd")
+			{
+				std::string name = line.substr(line.rfind(" ")+1);
+				if (name == "/")
+				{
+					continue;
+				}
+				else if (name == "..")
+				{
+					currentdir = previousdir;
+					continue;
+				}
+				else
+				{
+					currentdir = currentdir->findDir(name);
+					continue;
+				}
+			}
+			else if (line == "$ ls")
+			{
+				continue;
+			}
+		
+				if (line.substr(0, 3) == "dir")
+				{
+					// add dir
+					std::string name = line.substr(line.find(" ")+1);
+					currentdir->addDir(name);
+				}
+				else
+				{
+					// add file
+					unsigned int size = std::stoi(line.substr(0,line.find(" ")+1));
+					std::string name = line.substr(line.find(" ")+1);
+					currentdir->addFile(name, size);
+				}
+		}
+	}
+
+	calculatesize(&root);
+
+	return root;
+}
