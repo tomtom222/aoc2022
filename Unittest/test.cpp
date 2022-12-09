@@ -67,3 +67,45 @@ $ ls
 	ASSERT_EQ(Functions::day7_2(day7), 24933642);
 	//ASSERT_EQ(Functions::score_2(day2), 12);
 }
+
+TEST(Day8, Trees)
+{
+	Trees trees = {
+		{3, 0, 3, 7, 3},
+		{2, 5, 5, 1, 2},
+		{6, 5, 3, 3, 2},
+		{3, 3, 5, 4, 9},
+		{3, 5, 3, 9, 0},
+	};
+
+	ASSERT_EQ(Functions::day8_1(trees), 21);
+	ASSERT_EQ(Functions::day8_2(trees), 8);
+}
+
+TEST(Day9, Ropes)
+{
+	static const std::string day9 =
+		R"(R 4
+U 4
+L 3
+D 1
+R 4
+D 1
+L 5
+R 2)";
+
+	ASSERT_EQ(Functions::day9_1(day9), 13);
+	ASSERT_EQ(Functions::day9_2(day9,10), 1);
+
+
+		static const std::string day9_2 =
+		R"(R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20)";
+	ASSERT_EQ(Functions::day9_2(day9_2, 10), 36);
+}

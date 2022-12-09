@@ -4,6 +4,15 @@
 #include <map>
 #include <string>
 
+struct Coords
+{
+	int x=0;
+	int y=0;
+	unsigned int counter=0;
+};
+
+typedef std::vector<std::vector<unsigned int>> Trees;
+
 struct File
 {
 	unsigned int size;
